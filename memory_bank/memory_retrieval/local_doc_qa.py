@@ -1,6 +1,15 @@
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.document_loaders import UnstructuredFileLoader
+try:
+    from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+except ImportError:
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+try:
+    from langchain.vectorstores import FAISS
+except ImportError:
+    from langchain_community.vectorstores import FAISS
+try:
+    from langchain.document_loaders import UnstructuredFileLoader
+except ImportError:
+    from langchain_community.document_loaders import UnstructuredFileLoader
 # from models.chatglm_llm import ChatGLM
 from typing import List, Optional
 from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter, NLTKTextSplitter
