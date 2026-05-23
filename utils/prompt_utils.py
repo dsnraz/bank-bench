@@ -242,4 +242,37 @@ def build_prompt_with_search_memory_llamaindex(history,text,user_memory,user_nam
     return prompt,related_memos
 
 
+def generate_meta_prompt_dict_locomo_qa():
+    """LoCoMo QA 模式 prompt，用户自行填充。"""
+    meta_prompt_dict = {
+        'cn': """ """,
+        'en': """Now, you will play the role of a memory QA assistant, Answer the user's question based on the retrieved conversation memories. You possess memory, emotions, and preferences. You should: (1) Only answer based on the information in [Retrieved Memory] below. Do not fabricate; (2) understand past [Retrieved Memory] and extract information from them to answer questions if they are relevant to the current issue; (3) If no relevant information is found in [Retrieved Memory], output "no information available".
+Based on the current question, you begin to recall conversations given below, and the most relevant [Retrieved Memory] is: "{related_memory_content}\nThe date of this [Retrieved Memory] is {memo_dates}." The following is a multi-round conversation between {speaker_a} and {speaker_b}. Answer the question concisely, the reponse should be presented in English and in Markdown format.
+Please refer to {speaker_a} and {speaker_b} their personality: {personality} to reply. Question: {question}
+Short answer:
+"""
+    }
+    return meta_prompt_dict
+
+
+def build_prompt_locomo_qa(question, user_memory, user_name, user_memory_index,
+                           local_memory_qa, meta_prompt, user_keyword, ai_keyword,
+                           boot_actual_name, language, speaker_a="", speaker_b=""):
+    """LoCoMo QA：检索 → 构建 prompt，签名与原始 eval builder 一致。"""
+    memory_search_query = question.replace(user_keyword, user_name).replace(ai_keyword, 'AI')
+    related_memos, memo_dates = local_memory_qa.search_memory(memory_search_query, user_memory_index)
+    related_memos = '\n'.join(related_memos).replace('Memory:', '').strip()
+
+    related_memory_content = f"\n{str(related_memos).strip()}\n"
+    personality = user_memory.get('overall_personality', '')
+
+    prompt = meta_prompt.format(
+        related_memory_content=related_memory_content,
+        memo_dates=memo_dates,
+        personality=personality,
+        question=question,
+        speaker_a=speaker_a,
+        speaker_b=speaker_b,
+    )
+    return prompt, related_memos
 
