@@ -63,7 +63,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--ann-file", type=str, default=None,
                    help="LoCoMo QA 标注文件（locomo10.json）")
     p.add_argument("--prediction-key", type=str, default="locomo_bank_prediction")
-    p.add_argument("--vs-dir", type=str, default="/tmp/locomo_bank_vs",
+    p.add_argument("--vs-dir", type=str, default="vs",
                    help="FAISS 向量库持久化目录")
     p.add_argument("--qa-top-k", type=int, default=3)
 
