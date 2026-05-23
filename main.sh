@@ -1,5 +1,9 @@
 #!/bin/bash
-#
+#SBATCH -p gpu_chen
+#SBATCH -n 1
+#SBATCH -G 1
+#SBATCH -o job_obs_rag.out
+
 # MemoryBank-SiliconFriend 记忆摘要流水线
 # 对标 hyperbolic_memory 的 scripts/main.sh 参数风格
 #
