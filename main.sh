@@ -20,4 +20,5 @@ python main.py \
   --extraction-model-path /share/home/leiyh5/models/Qwen2.5-7B-Instruct \
   --generation-handler-type transformers \
   --generation-model-path /share/home/leiyh5/models/Llama-3.2-3B-Instruct \
+  --embedding-model sentence-transformers/all-mpnet-base-v2 \
   "$@"

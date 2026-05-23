@@ -57,6 +57,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--generation-api-base", type=str, default="https://api.deepseek.com")
     p.add_argument("--generation-api-key", type=str, default=None)
 
+    # ── 嵌入模型 ─────────────────────────────────────────────────
+    p.add_argument("--embedding-model", type=str,
+                   default="sentence-transformers/all-mpnet-base-v2",
+                   help="句向量模型名或本地路径")
+
     # ── 运行控制 ─────────────────────────────────────────────────
     p.add_argument("--device", type=str, default="auto")
     return p.parse_args()
@@ -106,7 +111,12 @@ def main() -> None:
             args.device, label="生成模型"
         )
 
-    # 3. 调用官方模块 summarize_memory — 核心逻辑不动
+    # 3. 设置嵌入模型（覆盖 model_config 默认值）
+    from memory_bank.memory_retrieval.configs import model_config
+    model_config.EMBEDDING_MODEL_EN = args.embedding_model
+    print(f"[嵌入模型] {args.embedding_model}")
+
+    # 4. 调用官方模块 summarize_memory — 核心逻辑不动
     from memory_bank.summarize_memory import summarize_memory
 
     memory_dir = args.memory_dir
