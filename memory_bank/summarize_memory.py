@@ -263,10 +263,13 @@ def _summarize_memory_locomo(memory, name, language, extraction_client, generati
                         person_list = json_repair.loads(person_raw)
                         if not isinstance(person_list, list) or len(person_list) != 2:
                             person_list = [person_raw, ""]
+                        else:
+                            person_list = [
+                                p if isinstance(p, str) else json.dumps(p, ensure_ascii=False)
+                                for p in person_list
+                            ]
                     except Exception:
                         person_list = [person_raw, ""]
-                    print(f"  DEBUG Phase1 person_raw: {repr(person_raw)[:300]}")
-                    print(f"  DEBUG Phase1 person_list: {repr(person_list)[:300]}")
                     entry['personality'][date] = person_list
                 print(f'  {session_key} {date}: summary {"skipped" if not his_flag else "done"}, personality {"skipped" if not person_flag else "done"}')
 
@@ -277,10 +280,11 @@ def _summarize_memory_locomo(memory, name, language, extraction_client, generati
             for date_key, s in entry.get('summary', {}).items():
                 all_summaries.append((f"{session_key} {date_key}", s))
             for date_key, p in entry.get('personality', {}).items():
-                print(f"  DEBUG personality[{date_key}] type={type(p).__name__}, repr={repr(p)[:200]}")
                 if isinstance(p, list) and len(p) == 2:
-                    pers_a_all.append((f"{session_key} {date_key}", p[0]))
-                    pers_b_all.append((f"{session_key} {date_key}", p[1]))
+                    v_a = p[0] if isinstance(p[0], str) else str(p[0])
+                    v_b = p[1] if isinstance(p[1], str) else str(p[1])
+                    pers_a_all.append((f"{session_key} {date_key}", v_a))
+                    pers_b_all.append((f"{session_key} {date_key}", v_b))
                 else:
                     pers_a_all.append((f"{session_key} {date_key}", str(p)))
 
@@ -299,6 +303,11 @@ def _summarize_memory_locomo(memory, name, language, extraction_client, generati
                 overall_list = json_repair.loads(overall_raw)
                 if not isinstance(overall_list, list) or len(overall_list) != 2:
                     overall_list = [overall_raw, ""]
+                else:
+                    overall_list = [
+                        p if isinstance(p, str) else str(p)
+                        for p in overall_list
+                    ]
             except Exception:
                 overall_list = [overall_raw, ""]
         else:
