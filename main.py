@@ -140,12 +140,19 @@ def _build_faiss(args) -> None:
     vs_root = Path(args.vs_dir)
     vs_root.mkdir(parents=True, exist_ok=True)
 
-    for sample_id, sample_data in bank.items():
-        if args.user_name and sample_id != args.user_name:
-            continue
+    items = [(sid, sd) for sid, sd in bank.items()
+              if not args.user_name or sid == args.user_name]
+    try:
+        from tqdm import tqdm
+        item_iter = tqdm(items, desc="建库", unit="sample")
+    except ImportError:
+        item_iter = items
+
+    for sample_id, sample_data in item_iter:
         vs_path = str(vs_root / sample_id)
         if Path(vs_path, "index.faiss").exists():
-            print(f"[建库] {sample_id}: FAISS 已存在，跳过 ({vs_path})")
+            if not isinstance(item_iter, list):
+                item_iter.write(f"[建库] {sample_id}: FAISS 已存在，跳过")
             continue
 
         flat = _flatten_locomo_sample(sample_id, sample_data)
@@ -158,7 +165,8 @@ def _build_faiss(args) -> None:
             filepath=tmp_path, vs_path=vs_path, user_name=sample_id
         )
         os.unlink(tmp_path)
-        print(f"  FAISS 已建立: {vs_path}")
+        if not isinstance(item_iter, list):
+            item_iter.write(f"[建库] {sample_id}: FAISS 已建立")
 
 
 def _phase3_qa(args, generation_handler) -> None:
