@@ -18,7 +18,7 @@ embedding_model_dict = {
 
 # Embedding model name
 EMBEDDING_MODEL_CN = "text2vec"
-EMBEDDING_MODEL_EN = "minilm-l6"
+EMBEDDING_MODEL_EN = "mpnet"
 
 # Embedding running device
 EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
