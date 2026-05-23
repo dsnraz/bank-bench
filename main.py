@@ -145,7 +145,7 @@ def _build_faiss(args) -> None:
             continue
         vs_path = str(vs_root / sample_id)
         if Path(vs_path, "index.faiss").exists():
-            print(f"  FAISS 已存在，跳过: {vs_path}")
+            print(f"[建库] {sample_id}: FAISS 已存在，跳过 ({vs_path})")
             continue
 
         flat = _flatten_locomo_sample(sample_id, sample_data)
@@ -216,7 +216,12 @@ def _phase3_qa(args, generation_handler) -> None:
             break
 
         sample_pred = {"sample_id": sample_id, "qa": [dict(q) for q in ann["qa"]]}
-        for qi, item in enumerate(sample_pred["qa"]):
+        try:
+            from tqdm import tqdm
+            qa_iter = tqdm(enumerate(sample_pred["qa"]), desc=f"  QA", total=len(sample_pred["qa"]))
+        except ImportError:
+            qa_iter = enumerate(sample_pred["qa"])
+        for qi, item in qa_iter:
             question = str(item.get("question", "")).strip()
             if not question:
                 continue
