@@ -139,10 +139,12 @@ def summarize_overall_personality_locomo(content_a, content_b, speaker_a, speake
         prompt = f'The following are the personality traits and emotions exhibited by {speaker_a} and {speaker_b} across multiple dialogues. Please summarize each person\'s personality separately. Output as a JSON list: first element for {speaker_a}, second for {speaker_b}.\n'
     prompt += f'\n{speaker_a}的分析：\n' if language == 'cn' else f'\n{speaker_a} analysis:\n'
     for date, s in content_a:
-        prompt += f"\n{date}: {s.strip()}"
+        s_str = s if isinstance(s, str) else str(s)
+        prompt += f"\n{date}: {s_str.strip()}"
     prompt += f'\n\n{speaker_b}的分析：\n' if language == 'cn' else f'\n\n{speaker_b} analysis:\n'
     for date, s in content_b:
-        prompt += f"\n{date}: {s.strip()}"
+        s_str = s if isinstance(s, str) else str(s)
+        prompt += f"\n{date}: {s_str.strip()}"
     prompt += '\n\n输出：' if language == 'cn' else '\n\nOutput:'
     return prompt
 
@@ -276,8 +278,10 @@ def _summarize_memory_locomo(memory, name, language, extraction_client, generati
                 all_summaries.append((f"{session_key} {date_key}", s))
             for date_key, p in entry.get('personality', {}).items():
                 if isinstance(p, list) and len(p) == 2:
-                    pers_a_all.append((f"{session_key} {date_key}", p[0]))
-                    pers_b_all.append((f"{session_key} {date_key}", p[1]))
+                    pers_a_all.append((f"{session_key} {date_key}",
+                                       p[0] if isinstance(p[0], str) else str(p[0])))
+                    pers_b_all.append((f"{session_key} {date_key}",
+                                       p[1] if isinstance(p[1], str) else str(p[1])))
                 else:
                     pers_a_all.append((f"{session_key} {date_key}", str(p)))
 
