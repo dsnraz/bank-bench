@@ -1,0 +1,20 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+[本地模型] /share/home/leiyh5/models/Qwen2.5-7B-Instruct  (类型: qwen)
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:06<00:20,  6.77s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:11<00:11,  5.78s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:16<00:05,  5.36s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:20<00:00,  4.79s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:20<00:00,  5.16s/it]
+模型加载完成
+[本地模型] /share/home/leiyh5/models/Llama-3.2-3B-Instruct  (类型: llama)
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:06<00:06,  6.86s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:09<00:00,  4.17s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:09<00:00,  4.57s/it]
+模型加载完成
+[嵌入模型] sentence-transformers/all-mpnet-base-v2
+输入记忆库: memories/eng_memory_cases.json
+输出文件:   memories/eng_memory_cases_enriched.json
+Traceback (most recent call last):
+  File "/share/home/leiyh5/bank-bench/main.py", line 144, in <module>
+    main()
+  File "/share/home/leiyh5/bank-bench/main.py", line 130, in main
+    shutil.copy(memory_dir, out_file)
+  File "/share/home/leiyh5/miniconda3/envs/bank/lib/python3.10/shutil.py", line 417, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/share/home/leiyh5/miniconda3/envs/bank/lib/python3.10/shutil.py", line 254, in copyfile
+    with open(src, 'rb') as fsrc:
+FileNotFoundError: [Errno 2] No such file or directory: 'memories/eng_memory_cases.json'

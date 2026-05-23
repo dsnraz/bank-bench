@@ -95,7 +95,7 @@ def convert_sample(sample: dict) -> dict:
 
 
 def main():
-    locomo_path = Path(__file__).parent.parent.parent / "locomo" / "data" / "locomo10.json"
+    locomo_path = Path("/share/home/leiyh5/locomo/data/locomo10.json")
     if not locomo_path.is_file():
         # 尝试通过命令行参数指定路径
         if len(sys.argv) > 1:
