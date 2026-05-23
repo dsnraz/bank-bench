@@ -62,6 +62,10 @@ def parse_args() -> argparse.Namespace:
                    default="sentence-transformers/all-mpnet-base-v2",
                    help="句向量模型名或本地路径")
 
+    # ── 模式 ─────────────────────────────────────────────────────
+    p.add_argument("--locomo", action="store_true", default=False,
+                   help="LoCoMo 模式：嵌套结构 sample→session，name[0]/name[1] 作为对话双方")
+
     # ── 运行控制 ─────────────────────────────────────────────────
     p.add_argument("--device", type=str, default="auto")
     return p.parse_args()
@@ -135,6 +139,7 @@ def main() -> None:
         language=args.language,
         extraction_handler=extraction_handler,
         generation_handler=generation_handler,
+        locomo=args.locomo,
     )
 
     print(f"记忆摘要完成，结果已写入: {out_file}")

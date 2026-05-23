@@ -51,8 +51,6 @@ def make_session_entry(turns: list, date_time: str, speaker_a: str, speaker_b: s
         "history": {date_time: pairs},
         "summary": {},
         "personality": {},
-        "overall_history": "",
-        "overall_personality": "",
     }
 
 
@@ -85,17 +83,21 @@ def main():
             if k.startswith("session_") and "date_time" not in k
         )
 
-        sample_entries = OrderedDict()
+        sessions = OrderedDict()
         for n in session_nums:
             turns = conv.get(f"session_{n}", [])
             date_time = conv.get(f"session_{n}_date_time", f"Session {n}")
-            sample_entries[f"session_{n}"] = make_session_entry(
+            sessions[f"session_{n}"] = make_session_entry(
                 turns, date_time, speaker_a, speaker_b
             )
             total_sessions += 1
 
-        bank[sid] = sample_entries
-        print(f"  {sid}: {len(sample_entries)} sessions")
+        bank[sid] = OrderedDict([
+            ("overall_history", ""),
+            ("overall_personality", []),
+            ("sessions", sessions),
+        ])
+        print(f"  {sid}: {len(sessions)} sessions")
 
     print(f"共 {total_sessions} 个 session")
 
