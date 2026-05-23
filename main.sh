@@ -18,12 +18,13 @@ conda activate bank
 cd /share/home/leiyh5/bank-bench
 
 python main.py \
-  --memory-dir memories/eng_memory_cases.json \
-  --out-file memories/eng_memory_cases_enriched.json \
+  --memory-dir resources/locomo10_bank.json \
+  --out-file resources/locomo10_bank_pred.json \
   --language en \
   --extraction-handler-type transformers \
   --extraction-model-path /share/home/leiyh5/models/Qwen2.5-7B-Instruct \
   --generation-handler-type transformers \
   --generation-model-path /share/home/leiyh5/models/Llama-3.2-3B-Instruct \
   --embedding-model sentence-transformers/all-mpnet-base-v2 \
+  --locomo \
   "$@"
