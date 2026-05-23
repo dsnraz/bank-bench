@@ -12,6 +12,11 @@
 #   --generation-handler-type  transformers → 本地模型做整体汇总
 #
 
+export HF_HUB_OFFLINE=1
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate bank
+cd /share/home/leiyh5/bank-bench
+
 python main.py \
   --memory-dir memories/eng_memory_cases.json \
   --out-file memories/eng_memory_cases_enriched.json \
