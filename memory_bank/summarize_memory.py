@@ -241,7 +241,12 @@ def _summarize_memory_locomo(memory, name, language, extraction_client, generati
             break
 
         # ── Phase 1: per-session 逐条处理 ─────────────────────────
-        for session_key, entry in sessions.items():
+        try:
+            from tqdm import tqdm
+            sess_iter = tqdm(sessions.items(), desc=f"  Phase 1 {sample_id}", unit="session", leave=False)
+        except ImportError:
+            sess_iter = sessions.items()
+        for session_key, entry in sess_iter:
             speaker_a, speaker_b = entry['name'][0], entry['name'][1]
             history = entry.get('history', {})
             if entry.get('summary') is None:
