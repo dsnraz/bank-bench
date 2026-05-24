@@ -204,7 +204,8 @@ class LocalMemoryRetrieval:
                  language='cn'
                  ):
         self.language = language
-        self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model_dict[embedding_model],
+        model_name = embedding_model_dict.get(embedding_model, embedding_model)
+        self.embeddings = HuggingFaceEmbeddings(model_name=model_name,
                                                 model_kwargs={'device': embedding_device})
         self.top_k = top_k
     
