@@ -1,4 +1,7 @@
-from langchain.text_splitter import CharacterTextSplitter
+try:
+    from langchain.text_splitter import CharacterTextSplitter
+except ImportError:
+    from langchain_text_splitters import CharacterTextSplitter
 import re
 from typing import List
 

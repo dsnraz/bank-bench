@@ -1,14 +1,29 @@
 import json, datetime
 import random, copy
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
-from langchain.document_loaders import UnstructuredFileLoader
-from langchain.docstore.document import Document
+try:
+    from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+except ImportError:
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+try:
+    from langchain.document_loaders import UnstructuredFileLoader
+except ImportError:
+    from langchain_community.document_loaders import UnstructuredFileLoader
+try:
+    from langchain.docstore.document import Document
+except ImportError:
+    from langchain_community.docstore.document import Document
 from typing import List, Tuple, Optional
-from langchain.vectorstores import FAISS
+try:
+    from langchain.vectorstores import FAISS
+except ImportError:
+    from langchain_community.vectorstores import FAISS
 from memory_retrieval.textsplitter import ChineseTextSplitter
 import numpy as np
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter
+except ImportError:
+    from langchain_text_splitters import RecursiveCharacterTextSplitter, TextSplitter
 from memory_retrieval.configs.model_config import *
 # return top-k text chunk from vector store
 VECTOR_SEARCH_TOP_K = 6

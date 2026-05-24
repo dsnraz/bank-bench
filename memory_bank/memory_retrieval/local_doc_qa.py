@@ -12,12 +12,18 @@ except ImportError:
     from langchain_community.document_loaders import UnstructuredFileLoader
 # from models.chatglm_llm import ChatGLM
 from typing import List, Optional
-from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter, NLTKTextSplitter
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter, NLTKTextSplitter
+except ImportError:
+    from langchain_text_splitters import RecursiveCharacterTextSplitter, TextSplitter, NLTKTextSplitter
 from memory_retrieval.configs.model_config import *
 import datetime
 from memory_retrieval.textsplitter import ChineseTextSplitter
 from typing import List, Tuple
-from langchain.docstore.document import Document
+try:
+    from langchain.docstore.document import Document
+except ImportError:
+    from langchain_community.docstore.document import Document
 import numpy as np
 import json
 # return top-k text chunk from vector store
