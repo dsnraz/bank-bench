@@ -112,7 +112,7 @@ def summarize_content_prompt(content,user_name,boot_name,language='en'):
         response = dialog['response']
         prompt += f"\n{user_name}：{query.strip()}"
         prompt += f"\n{boot_name}：{response.strip()}"
-    prompt += ('\n总结：' if language=='cn' else '\nSummarization：')
+    prompt += ('\n总结：' if language=='cn' else '\nSummarization (do not add introductory text):\n')
     return prompt
 
 def summarize_overall_prompt(content,language='en'):
@@ -120,7 +120,7 @@ def summarize_overall_prompt(content,language='en'):
     for date,summary_dict in content:
         summary = summary_dict['content']
         prompt += (f"\n时间{date}发生的事件为{summary.strip()}" if language=='cn' else f"At {date}, the events are {summary.strip()}")
-    prompt += ('\n总结：' if language=='cn' else '\nSummarization：')
+    prompt += ('\n总结：' if language=='cn' else '\nSummarization (do not add introductory text):\n')
     return prompt
 
 def summarize_overall_personality(content,language='en'):
@@ -134,9 +134,14 @@ def summarize_overall_personality(content,language='en'):
 def summarize_overall_personality_locomo(content_a, content_b, speaker_a, speaker_b, language):
     """LoCoMo 整体人格汇总：分别汇总两个对话者的人格分析。"""
     if language == 'cn':
-        prompt = f'以下是{speaker_a}和{speaker_b}各自在多段对话中展现出来的人格特质和心情。请分别总体概括两人的性格，以 JSON 列表格式输出，第一个元素为{speaker_a}，第二个元素为{speaker_b}。\n'
+        prompt = (f'以下是{speaker_a}和{speaker_b}各自在多段对话中展现出来的人格特质和心情。'
+                  f'请分别总体概括两人的性格，以 JSON 列表格式输出，两个字符串元素，第一个为{speaker_a}，第二个为{speaker_b}。'
+                  f'不要添加介绍性文字或markdown代码块。\n')
     else:
-        prompt = f'The following are the personality traits and emotions exhibited by {speaker_a} and {speaker_b} across multiple dialogues. Please summarize each person\'s personality separately. Output as a JSON list: first element for {speaker_a}, second for {speaker_b}.\n'
+        prompt = (f'The following are the personality traits and emotions exhibited by {speaker_a} and {speaker_b} across multiple dialogues. '
+                  f'Please summarize each person\'s personality separately. '
+                  f'Output as a JSON list with two string elements: first for {speaker_a}, second for {speaker_b}. '
+                  f'Do not add introductory text or markdown code fences.\n')
     prompt += f'\n{speaker_a}的分析：\n' if language == 'cn' else f'\n{speaker_a} analysis:\n'
     for date, s in content_a:
         prompt += f"\n{date}: {s.strip()}"
@@ -161,9 +166,13 @@ def summarize_person_prompt(content,user_name,boot_name,language):
 def summarize_person_prompt_locomo(content, speaker_a, speaker_b, language):
     """LoCoMo 人格分析：对两个对话参与者分别分析，不涉及回复策略。"""
     if language == 'cn':
-        prompt = f'请根据以下的对话，分别推测总结{speaker_a}和{speaker_b}的性格特点和心情。请以 JSON 列表格式输出，第一个元素为{speaker_a}的分析，第二个元素为{speaker_b}的分析。\n对话内容：\n'
+        prompt = (f'请根据以下的对话，分别推测总结{speaker_a}和{speaker_b}的性格特点和心情。'
+                  f'请以 JSON 列表格式输出，两个字符串元素，第一个为{speaker_a}的分析，第二个为{speaker_b}的分析。'
+                  f'不要添加介绍性文字或markdown代码块。\n对话内容：\n')
     else:
-        prompt = f'Based on the following dialogue, please summarize the personality traits and emotions of {speaker_a} and {speaker_b} separately. Output as a JSON list with two elements: first for {speaker_a}, second for {speaker_b}.\nDialogue content:\n'
+        prompt = (f'Based on the following dialogue, please summarize the personality traits and emotions of {speaker_a} and {speaker_b} separately. '
+                  f'Output as a JSON list with two string elements: first for {speaker_a}, second for {speaker_b}. '
+                  f'Do not add introductory text or markdown code fences.\nDialogue content:\n')
     for dialog in content:
         query = dialog['query']
         response = dialog['response']
